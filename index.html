@@ -1,197 +1,132 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>College Issue Reporting System</title>
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-
-        nav {
-            background: #1e4d3b;
-            padding: 15px;
-            text-align: center;
-        }
-
-        nav button {
-            margin: 5px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            background: white;
-            border-radius: 5px;
-        }
-
-        .container {
-            padding: 30px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        button.submit-btn {
-            background: #1e4d3b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .card {
-            background: white;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-
-        img {
-            width: 200px;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-
-<body>
-
-<nav>
-    <button onclick="showHome()">Home</button>
-    <button onclick="showDashboard()">Dashboard</button>
-    <button onclick="showTechnician()">Technician</button>
-</nav>
-
-<div class="container">
-
-    <!-- HOME -->
-    <div id="home">
-        <h2>Report an Issue</h2>
-
-        <input type="text" id="room" placeholder="Enter Room Number">
-        <textarea id="desc" placeholder="Describe the Issue"></textarea>
-        <input type="file" id="image" accept="image/*">
-
-        <button class="submit-btn" onclick="submitIssue()">Submit</button>
-    </div>
-
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="hidden">
-        <h2>Your Complaints</h2>
-        <div id="studentComplaints"></div>
-    </div>
-
-    <!-- TECHNICIAN -->
-    <div id="technician" class="hidden">
-        <h2>Technician Panel</h2>
-        <div id="allComplaints"></div>
-    </div>
-
-</div>
-
 <script>
-    let complaints = [];
 
-    function showHome() {
-        document.getElementById("home").classList.remove("hidden");
-        document.getElementById("dashboard").classList.add("hidden");
-        document.getElementById("technician").classList.add("hidden");
+let complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+
+function saveToLocal() {
+    localStorage.setItem("complaints", JSON.stringify(complaints));
+}
+
+function showHome() {
+    document.getElementById("home").classList.remove("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("technician").classList.add("hidden");
+}
+
+function showDashboard() {
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("technician").classList.add("hidden");
+    loadStudentComplaints();
+}
+
+function showTechnician() {
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("technician").classList.remove("hidden");
+    loadAllComplaints();
+}
+
+function submitIssue() {
+    let room = document.getElementById("room").value;
+    let desc = document.getElementById("desc").value;
+    let fileInput = document.getElementById("image");
+    let file = fileInput.files[0];
+
+    if (!room || !desc || !file) {
+        alert("Please fill all fields and upload image");
+        return;
     }
 
-    function showDashboard() {
-        document.getElementById("home").classList.add("hidden");
-        document.getElementById("dashboard").classList.remove("hidden");
-        document.getElementById("technician").classList.add("hidden");
-        loadStudentComplaints();
-    }
+    let reader = new FileReader();
 
-    function showTechnician() {
-        document.getElementById("home").classList.add("hidden");
-        document.getElementById("dashboard").classList.add("hidden");
-        document.getElementById("technician").classList.remove("hidden");
-        loadAllComplaints();
-    }
-
-    function submitIssue() {
-        let room = document.getElementById("room").value;
-        let desc = document.getElementById("desc").value;
-        let fileInput = document.getElementById("image");
-        let file = fileInput.files[0];
-
-        if (!room || !desc || !file) {
-            alert("Please fill all fields and upload image");
-            return;
-        }
-
-        let reader = new FileReader();
-
-        reader.onload = function(e) {
-            let complaint = {
-                room: room,
-                desc: desc,
-                image: e.target.result,
-                status: "Pending"
-            };
-
-            complaints.push(complaint);
-
-            alert("Submitted Successfully ✅");
-            alert("Complaint Raised Successfully 📩");
-
-            document.getElementById("room").value = "";
-            document.getElementById("desc").value = "";
-            fileInput.value = "";
+    reader.onload = function(e) {
+        let complaint = {
+            room: room,
+            desc: desc,
+            image: e.target.result,
+            status: "Pending"
         };
 
-        reader.readAsDataURL(file);
-    }
+        complaints.push(complaint);
+        saveToLocal();
 
-    function loadStudentComplaints() {
-        let container = document.getElementById("studentComplaints");
-        container.innerHTML = "";
+        alert("Submitted Successfully ✅");
+        alert("Complaint Raised Successfully 📩");
 
-        complaints.forEach(c => {
-            container.innerHTML += `
-                <div class="card">
-                    <p><b>Room:</b> ${c.room}</p>
-                    <p><b>Issue:</b> ${c.desc}</p>
-                    <p><b>Status:</b> ${c.status}</p>
-                    <img src="${c.image}">
-                </div>
-            `;
-        });
-    }
+        document.getElementById("room").value = "";
+        document.getElementById("desc").value = "";
+        fileInput.value = "";
+    };
 
-    function loadAllComplaints() {
-        let container = document.getElementById("allComplaints");
-        container.innerHTML = "";
+    reader.readAsDataURL(file);
+}
 
-        complaints.forEach((c, index) => {
-            container.innerHTML += `
-                <div class="card">
-                    <p><b>Room:</b> ${c.room}</p>
-                    <p><b>Issue:</b> ${c.desc}</p>
-                    <p><b>Status:</b> ${c.status}</p>
-                    <img src="${c.image}">
-                    <br>
-                    <button onclick="updateStatus(${index})">Mark Completed</button>
-                </div>
-            `;
-        });
-    }
+function loadStudentComplaints() {
 
-    function updateStatus(index) {
-        complaints[index].status = "Completed";
-        loadAllComplaints();
-        alert("Status Updated ✅");
-    }
+    let container = document.getElementById("studentComplaints");
+    container.innerHTML = "";
+
+    // 🔹 Important Contacts Section
+    container.innerHTML += `
+        <div class="card">
+            <h3>📞 Important Contacts</h3>
+            <p><b>HOD Contact:</b> 9949606658</p>
+            <p><b>Emergency Numbers:</b></p>
+            <p>🚑 Ambulance: 108</p>
+            <p>👮 Police: 100</p>
+            <p>🔥 Fire: 101</p>
+        </div>
+    `;
+
+    // 🔹 Technician Details Section
+    container.innerHTML += `
+        <div class="card">
+            <h3>🛠 Technician Details</h3>
+            <p><b>Name:</b> Bavuma</p>
+            <p><b>Mobile:</b> 9911882277</p>
+            <p><b>Room Number:</b> 100</p>
+        </div>
+    `;
+
+    // 🔹 Complaints List
+    complaints.forEach(c => {
+        container.innerHTML += `
+            <div class="card">
+                <h3>📌 Complaint</h3>
+                <p><b>Room:</b> ${c.room}</p>
+                <p><b>Issue:</b> ${c.desc}</p>
+                <p><b>Status:</b> ${c.status}</p>
+                <img src="${c.image}">
+            </div>
+        `;
+    });
+}
+
+function loadAllComplaints() {
+    let container = document.getElementById("allComplaints");
+    container.innerHTML = "";
+
+    complaints.forEach((c, index) => {
+        container.innerHTML += `
+            <div class="card">
+                <p><b>Room:</b> ${c.room}</p>
+                <p><b>Issue:</b> ${c.desc}</p>
+                <p><b>Status:</b> ${c.status}</p>
+                <img src="${c.image}">
+                <br><br>
+                <button onclick="updateStatus(${index})">
+                    Mark Completed
+                </button>
+            </div>
+        `;
+    });
+}
+
+function updateStatus(index) {
+    complaints[index].status = "Completed";
+    saveToLocal();
+    loadAllComplaints();
+    alert("Status Updated ✅");
+}
+
 </script>
-
-</body>
-</html>
