@@ -1,286 +1,179 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>College Issue Reporting System</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial;
-      margin: 0;
-      background: #f4f6f9;
-    }
+    <title>College Issue Reporting System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
 
-    header {
-      background: #2f5d50;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
+        nav {
+            background: #1e4d3b;
+            padding: 15px;
+            text-align: center;
+        }
 
-    nav {
-      background: #1e3d35;
-      padding: 10px;
-      text-align: center;
-    }
+        nav button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            background: white;
+            border-radius: 5px;
+        }
 
-    nav button {
-      padding: 8px 15px;
-      margin: 5px;
-      border: none;
-      cursor: pointer;
-      background: white;
-      border-radius: 5px;
-    }
+        .container {
+            padding: 30px;
+        }
 
-    section {
-      padding: 20px;
-      display: none;
-    }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
 
-    .active {
-      display: block;
-    }
+        button.submit-btn {
+            background: #1e4d3b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+        }
 
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-    }
+        .hidden {
+            display: none;
+        }
 
-    button.submit-btn {
-      background: #2f5d50;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .issue-card {
-      background: white;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    img {
-      max-width: 200px;
-      margin-top: 10px;
-    }
-  </style>
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
-  <h2>College Issue Reporting System</h2>
-</header>
-
 <nav>
-  <button onclick="showHome()">Home</button>
-  <button onclick="showDashboard()">Dashboard (Technician)</button>
+    <button onclick="showHome()">Home</button>
+    <button onclick="showDashboard()">Dashboard</button>
+    <button onclick="showTechnician()">Technician</button>
 </nav>
 
-<!-- HOME PAGE -->
-<section id="home" class="active">
-  <h3>Report an Issue</h3>
-  <input type="text" id="room" placeholder="Room Number" required>
-  <textarea id="description" placeholder="Describe the issue"></textarea>
-  <input type="file" id="imageInput" accept="image/*">
-  <button class="submit-btn" onclick="submitIssue()">Submit Issue</button>
-</section>
+<div class="container">
 
-<!-- DASHBOARD -->
-<section id="dashboard">
-  <h3>Reported Issues</h3>
-  <div id="issuesList"></div>
-</section>
+    <!-- HOME -->
+    <div id="home">
+        <h2>Report an Issue</h2>
 
-<script>
-function showHome() {
-... (76 lines left)
+        <input type="text" id="room" placeholder="Enter Room Number">
 
-message.txt
-5 KB
-﻿
-JAYYYY
-jaydeep_0911
- 
- 
-HACKERRR !!
-<!DOCTYPE html>
-<html>
-<head>
-  <title>College Issue Reporting System</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial;
-      margin: 0;
-      background: #f4f6f9;
-    }
+        <textarea id="desc" placeholder="Describe the Issue"></textarea>
 
-    header {
-      background: #2f5d50;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
+        <input type="file" id="image">
 
-    nav {
-      background: #1e3d35;
-      padding: 10px;
-      text-align: center;
-    }
+        <button class="submit-btn" onclick="submitIssue()">Submit</button>
+    </div>
 
-    nav button {
-      padding: 8px 15px;
-      margin: 5px;
-      border: none;
-      cursor: pointer;
-      background: white;
-      border-radius: 5px;
-    }
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+        <h2>Your Complaints</h2>
+        <div id="studentComplaints"></div>
+    </div>
 
-    section {
-      padding: 20px;
-      display: none;
-    }
+    <!-- TECHNICIAN -->
+    <div id="technician" class="hidden">
+        <h2>Technician Panel</h2>
+        <div id="allComplaints"></div>
+    </div>
 
-    .active {
-      display: block;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-    }
-
-    button.submit-btn {
-      background: #2f5d50;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .issue-card {
-      background: white;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    img {
-      max-width: 200px;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <h2>College Issue Reporting System</h2>
-</header>
-
-<nav>
-  <button onclick="showHome()">Home</button>
-  <button onclick="showDashboard()">Dashboard (Technician)</button>
-</nav>
-
-<!-- HOME PAGE -->
-<section id="home" class="active">
-  <h3>Report an Issue</h3>
-  <input type="text" id="room" placeholder="Room Number" required>
-  <textarea id="description" placeholder="Describe the issue"></textarea>
-  <input type="file" id="imageInput" accept="image/*">
-  <button class="submit-btn" onclick="submitIssue()">Submit Issue</button>
-</section>
-
-<!-- DASHBOARD -->
-<section id="dashboard">
-  <h3>Reported Issues</h3>
-  <div id="issuesList"></div>
-</section>
+</div>
 
 <script>
-function showHome() {
-  document.getElementById("home").classList.add("active");
-  document.getElementById("dashboard").classList.remove("active");
-}
+    let complaints = [];
 
-function showDashboard() {
-  document.getElementById("dashboard").classList.add("active");
-  document.getElementById("home").classList.remove("active");
-  loadIssues();
-}
+    function showHome() {
+        document.getElementById("home").classList.remove("hidden");
+        document.getElementById("dashboard").classList.add("hidden");
+        document.getElementById("technician").classList.add("hidden");
+    }
 
-function submitIssue() {
-  const room = document.getElementById("room").value;
-  const description = document.getElementById("description").value;
-  const imageInput = document.getElementById("imageInput");
+    function showDashboard() {
+        document.getElementById("home").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+        document.getElementById("technician").classList.add("hidden");
+        loadStudentComplaints();
+    }
 
-  if (!room || !description) {
-    alert("Please fill all fields");
-    return;
-  }
+    function showTechnician() {
+        document.getElementById("home").classList.add("hidden");
+        document.getElementById("dashboard").classList.add("hidden");
+        document.getElementById("technician").classList.remove("hidden");
+        loadAllComplaints();
+    }
 
-  const reader = new FileReader();
-  reader.onload = function () {
-    const issue = {
-      room,
-      description,
-      image: reader.result,
-      status: "Pending"
-    };
+    function submitIssue() {
+        let room = document.getElementById("room").value;
+        let desc = document.getElementById("desc").value;
 
-    let issues = JSON.parse(localStorage.getItem("issues")) || [];
-    issues.push(issue);
-    localStorage.setItem("issues", JSON.stringify(issues));
+        if (room === "" || desc === "") {
+            alert("Please fill all fields");
+            return;
+        }
 
-    alert("Issue Submitted Successfully!");
-    document.getElementById("room").value = "";
-    document.getElementById("description").value = "";
-    imageInput.value = "";
-  };
+        let complaint = {
+            room: room,
+            desc: desc,
+            status: "Pending"
+        };
 
-  if (imageInput.files[0]) {
-    reader.readAsDataURL(imageInput.files[0]);
-  } else {
-    reader.onload();
-  }
-}
+        complaints.push(complaint);
 
-function loadIssues() {
-  const issuesList = document.getElementById("issuesList");
-  issuesList.innerHTML = "";
+        alert("Submitted Successfully ✅");
+        alert("Complaint Raised Successfully 📩");
 
-  let issues = JSON.parse(localStorage.getItem("issues")) || [];
+        document.getElementById("room").value = "";
+        document.getElementById("desc").value = "";
+    }
 
-  issues.forEach((issue, index) => {
-    const div = document.createElement("div");
-    div.className = "issue-card";
-    div.innerHTML = `
-      <strong>Room:</strong> ${issue.room}<br>
-      <strong>Description:</strong> ${issue.description}<br>
-      <strong>Status:</strong> ${issue.status}<br>
-      ${issue.image ? `<img src="${issue.image}">` : ""}
-      <br><button onclick="resolveIssue(${index})">Mark as Resolved</button>
-    `;
-    issuesList.appendChild(div);
-  });
-}
+    function loadStudentComplaints() {
+        let container = document.getElementById("studentComplaints");
+        container.innerHTML = "";
 
-function resolveIssue(index) {
-  let issues = JSON.parse(localStorage.getItem("issues"));
-  issues[index].status = "Resolved";
-  localStorage.setItem("issues", JSON.stringify(issues));
-  loadIssues();
-}
+        complaints.forEach(c => {
+            container.innerHTML += `
+                <div class="card">
+                    <p><b>Room:</b> ${c.room}</p>
+                    <p><b>Issue:</b> ${c.desc}</p>
+                    <p><b>Status:</b> ${c.status}</p>
+                </div>
+            `;
+        });
+    }
+
+    function loadAllComplaints() {
+        let container = document.getElementById("allComplaints");
+        container.innerHTML = "";
+
+        complaints.forEach((c, index) => {
+            container.innerHTML += `
+                <div class="card">
+                    <p><b>Room:</b> ${c.room}</p>
+                    <p><b>Issue:</b> ${c.desc}</p>
+                    <p><b>Status:</b> ${c.status}</p>
+                    <button onclick="updateStatus(${index})">Mark Completed</button>
+                </div>
+            `;
+        });
+    }
+
+    function updateStatus(index) {
+        complaints[index].status = "Completed";
+        loadAllComplaints();
+        alert("Status Updated ✅");
+    }
 </script>
 
 </body>
