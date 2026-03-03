@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College Issue Reporting System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f6f9;
+    }
+
+    header {
+      background: #2f5d50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1e3d35;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      padding: 8px 15px;
+      margin: 5px;
+      border: none;
+      cursor: pointer;
+      background: white;
+      border-radius: 5px;
+    }
+
+    section {
+      padding: 20px;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+
+    button.submit-btn {
+      background: #2f5d50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .issue-card {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    img {
+      max-width: 200px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>College Issue Reporting System</h2>
+</header>
+
+<nav>
+  <button onclick="showHome()">Home</button>
+  <button onclick="showDashboard()">Dashboard (Technician)</button>
+</nav>
+
+<!-- HOME PAGE -->
+<section id="home" class="active">
+  <h3>Report an Issue</h3>
+  <input type="text" id="room" placeholder="Room Number" required>
+  <textarea id="description" placeholder="Describe the issue"></textarea>
+  <input type="file" id="imageInput" accept="image/*">
+  <button class="submit-btn" onclick="submitIssue()">Submit Issue</button>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+  <h3>Reported Issues</h3>
+  <div id="issuesList"></div>
+</section>
+
+<script>
+function showHome() {
+... (76 lines left)
+
+message.txt
+5 KB
+﻿
+JAYYYY
+jaydeep_0911
+ 
+ 
+HACKERRR !!
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College Issue Reporting System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f6f9;
+    }
+
+    header {
+      background: #2f5d50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1e3d35;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      padding: 8px 15px;
+      margin: 5px;
+      border: none;
+      cursor: pointer;
+      background: white;
+      border-radius: 5px;
+    }
+
+    section {
+      padding: 20px;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+
+    button.submit-btn {
+      background: #2f5d50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .issue-card {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    img {
+      max-width: 200px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>College Issue Reporting System</h2>
+</header>
+
+<nav>
+  <button onclick="showHome()">Home</button>
+  <button onclick="showDashboard()">Dashboard (Technician)</button>
+</nav>
+
+<!-- HOME PAGE -->
+<section id="home" class="active">
+  <h3>Report an Issue</h3>
+  <input type="text" id="room" placeholder="Room Number" required>
+  <textarea id="description" placeholder="Describe the issue"></textarea>
+  <input type="file" id="imageInput" accept="image/*">
+  <button class="submit-btn" onclick="submitIssue()">Submit Issue</button>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+  <h3>Reported Issues</h3>
+  <div id="issuesList"></div>
+</section>
+
+<script>
+function showHome() {
+  document.getElementById("home").classList.add("active");
+  document.getElementById("dashboard").classList.remove("active");
+}
+
+function showDashboard() {
+  document.getElementById("dashboard").classList.add("active");
+  document.getElementById("home").classList.remove("active");
+  loadIssues();
+}
+
+function submitIssue() {
+  const room = document.getElementById("room").value;
+  const description = document.getElementById("description").value;
+  const imageInput = document.getElementById("imageInput");
+
+  if (!room || !description) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function () {
+    const issue = {
+      room,
+      description,
+      image: reader.result,
+      status: "Pending"
+    };
+
+    let issues = JSON.parse(localStorage.getItem("issues")) || [];
+    issues.push(issue);
+    localStorage.setItem("issues", JSON.stringify(issues));
+
+    alert("Issue Submitted Successfully!");
+    document.getElementById("room").value = "";
+    document.getElementById("description").value = "";
+    imageInput.value = "";
+  };
+
+  if (imageInput.files[0]) {
+    reader.readAsDataURL(imageInput.files[0]);
+  } else {
+    reader.onload();
+  }
+}
+
+function loadIssues() {
+  const issuesList = document.getElementById("issuesList");
+  issuesList.innerHTML = "";
+
+  let issues = JSON.parse(localStorage.getItem("issues")) || [];
+
+  issues.forEach((issue, index) => {
+    const div = document.createElement("div");
+    div.className = "issue-card";
+    div.innerHTML = `
+      <strong>Room:</strong> ${issue.room}<br>
+      <strong>Description:</strong> ${issue.description}<br>
+      <strong>Status:</strong> ${issue.status}<br>
+      ${issue.image ? `<img src="${issue.image}">` : ""}
+      <br><button onclick="resolveIssue(${index})">Mark as Resolved</button>
+    `;
+    issuesList.appendChild(div);
+  });
+}
+
+function resolveIssue(index) {
+  let issues = JSON.parse(localStorage.getItem("issues"));
+  issues[index].status = "Resolved";
+  localStorage.setItem("issues", JSON.stringify(issues));
+  loadIssues();
+}
+</script>
+
+</body>
+</html>
