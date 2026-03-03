@@ -48,7 +48,13 @@
         .card {
             background: white;
             padding: 15px;
-            margin: 10px 0;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        img {
+            width: 200px;
+            margin-top: 10px;
             border-radius: 5px;
         }
     </style>
@@ -69,10 +75,8 @@
         <h2>Report an Issue</h2>
 
         <input type="text" id="room" placeholder="Enter Room Number">
-
         <textarea id="desc" placeholder="Describe the Issue"></textarea>
-
-        <input type="file" id="image">
+        <input type="file" id="image" accept="image/*">
 
         <button class="submit-btn" onclick="submitIssue()">Submit</button>
     </div>
@@ -117,25 +121,35 @@
     function submitIssue() {
         let room = document.getElementById("room").value;
         let desc = document.getElementById("desc").value;
+        let fileInput = document.getElementById("image");
+        let file = fileInput.files[0];
 
-        if (room === "" || desc === "") {
-            alert("Please fill all fields");
+        if (!room || !desc || !file) {
+            alert("Please fill all fields and upload image");
             return;
         }
 
-        let complaint = {
-            room: room,
-            desc: desc,
-            status: "Pending"
+        let reader = new FileReader();
+
+        reader.onload = function(e) {
+            let complaint = {
+                room: room,
+                desc: desc,
+                image: e.target.result,
+                status: "Pending"
+            };
+
+            complaints.push(complaint);
+
+            alert("Submitted Successfully ✅");
+            alert("Complaint Raised Successfully 📩");
+
+            document.getElementById("room").value = "";
+            document.getElementById("desc").value = "";
+            fileInput.value = "";
         };
 
-        complaints.push(complaint);
-
-        alert("Submitted Successfully ✅");
-        alert("Complaint Raised Successfully 📩");
-
-        document.getElementById("room").value = "";
-        document.getElementById("desc").value = "";
+        reader.readAsDataURL(file);
     }
 
     function loadStudentComplaints() {
@@ -148,6 +162,7 @@
                     <p><b>Room:</b> ${c.room}</p>
                     <p><b>Issue:</b> ${c.desc}</p>
                     <p><b>Status:</b> ${c.status}</p>
+                    <img src="${c.image}">
                 </div>
             `;
         });
@@ -163,6 +178,8 @@
                     <p><b>Room:</b> ${c.room}</p>
                     <p><b>Issue:</b> ${c.desc}</p>
                     <p><b>Status:</b> ${c.status}</p>
+                    <img src="${c.image}">
+                    <br>
                     <button onclick="updateStatus(${index})">Mark Completed</button>
                 </div>
             `;
